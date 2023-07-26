@@ -7,7 +7,7 @@ const userRoutes = require('./routes/userRoutes');
 const sauceRoutes = require('./routes/sauceRoutes');
 
 //Models
-const Sauce = require('./models/Sauce'); // importation du modèle Sauce
+//const Sauce = require('./models/Sauce.js'); // importation du modèle Sauce
 
 // Base de données : connexion à MongoDB Atlas
 mongoose.connect('mongodb+srv://piiquante:ahuYPeNnOYDPrkbV@cluster0.yamztne.mongodb.net/?retryWrites=true&w=majority',
@@ -22,7 +22,7 @@ const app = express();
 
 //lorsqu'une requête avec un en-tête content-type : application/json est reçue,
 //ce middleware prend en charge de convertir automatiquement les données json en un obj js utilisable
-//équivalent à bodyParser
+//équivalent à body-Parser
 app.use(express.json());
 
 //middleware général avant la route d'API
