@@ -1,13 +1,15 @@
 //Imports
 const express = require('express'); // importation de express
 const mongoose = require('mongoose'); // importation de mongoose
+const path = require('path'); //importation pour accéder au path de notre serveur
 
 // Routes
 const userRoutes = require('./routes/userRoutes');
 const sauceRoutes = require('./routes/sauceRoutes');
 
 //Models
-//const Sauce = require('./models/Sauce.js'); // importation du modèle Sauce
+const Sauce = require('./models/Sauce.js'); // importation du modèle Sauce
+//const Sauce = require('./models/Sauce.js');
 
 // Base de données : connexion à MongoDB Atlas
 mongoose.connect('mongodb+srv://piiquante:ahuYPeNnOYDPrkbV@cluster0.yamztne.mongodb.net/?retryWrites=true&w=majority',
@@ -40,6 +42,7 @@ app.use((req, res, next) => { // cors headers
 // Endpoints
 app.use('/api/auth', userRoutes);
 app.use('/api/sauces', sauceRoutes);
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 //exportation de cette appli
 module.exports = app;
