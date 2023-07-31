@@ -1,4 +1,5 @@
 const Sauce = require('../models/Sauce');
+const fs = require('fs'); //on importe fs (file système) qui permet de modifier le système de fichiers
 
 //logique métier de la route GET
 exports.getAllSauces = (req, res, next) => {
@@ -58,6 +59,20 @@ exports.modifySauce = (req, res, next) => {
 
 //logique métier de la route DELETE
 exports.deleteSauce = (req, res, next) => {
+    Sauce.findOne({ _id: req.params.id }) //on récupère notre objet en BDD
+        .then(sauce => { //en cas de réussite, on vérifie que c'est bien le propriétaire de l'objet qui demande la suppression
+            if(sauce.userId != req.auth.userId) { //on vérifie que le userId enregistré en BDD correspond bien au userId que nous récupérons du token
+                res.status(401).json({ message: 'Non autorisé' }); //erreur 401 si ce n'est pas le cas
+            } else { // si c'est le bon utilisateur, on supprime l'objet de la BDD mais aussi l'image du système de fichier
+                const filename = sauce.imageUrl.split('/images/')[1];
+                fs.unlink(`images/${filename}`, () => {
+                    Sauce.deleteOne({ _id: req.params.id })
+                        .then(() => { res.status(200).json({ message: 'Objet supprimé !' }); })
+                        .catch(error => res.status(401).json({ error }));
+                });
+            }
+        })
+        .catch((error) => { res.status(500).json({ error }); })
     //on utilise la méthode deleteOne pour supprimer une sauce dans la BDD
     Sauce.deleteOne({_id: req.params.id})
     .then(() => { res.status(200).json({ message: 'Sauce supprimée !'}); }) //réponse OK lorsqu'une sauce est supprimée
