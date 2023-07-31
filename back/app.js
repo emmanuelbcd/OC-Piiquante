@@ -25,7 +25,7 @@ const app = express();
 //lorsqu'une requête avec un en-tête content-type : application/json est reçue,
 //ce middleware prend en charge de convertir automatiquement les données json en un obj js utilisable
 //équivalent à body-Parser
-app.use(express.json());
+app.use(express.json()); //remplace bodyParser à partir de la version 4.16 d'express
 
 //middleware général avant la route d'API
 //le middle CORS est utilisé pour autoriser ou bloquer les requêtes d'origine différentes vers l'API
