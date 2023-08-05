@@ -4,6 +4,10 @@ const User = require('../models/User');
 
 // fonction signup : on enregistre de nouveaux utilisateurs
 exports.signup = (req, res, next) => {
+    if (!req.body.email || !req.body.password) {
+        return res.status(400).json({ message: 'Email et mot de passe requis !' });
+    }
+    
     bcrypt.hash(req.body.password, 10) //on appelle la fonction de hachage de bcrypt dans notre mdp et on lui demande de saler le mdp 10 fois
         .then(hash => { //on récupère le hash de mdp
             const user = new User({ //on crée un utilisateur
@@ -12,17 +16,27 @@ exports.signup = (req, res, next) => {
             });
             user.save() //on enregistre l'utilisateur dans la base de données
                 .then(() => res.status(201).json({ message: 'Utilisateur créé !'})) //on renvoie un 201 pour une création de ressource
-                .catch(error => res.status(400).json({ error }));
+                .catch(error => { 
+                    console.log(error);
+                    res.status(400).json({ error }); 
+                })
         })
-        .catch(error => res.status(500).json({ error })); // on va capter l'erreur (500 = err serveur)
+        .catch(error => { 
+            console.log(error);
+            res.status(500).json({ error }); 
+        }) // on va capter l'erreur (500 = err serveur)
 };
 
 //fonction login : on vérifie si un utilisateur existe dans notre BDD et si le mdp transmis correspond à cet utilisateur
 exports.login = (req, res, next) => {
+    if (!req.body.email || !req.body.password) {
+        return res.status(400).json({ message: 'Email et mot de passe requis !' });
+    }
+    
     User.findOne({email: req.body.email}) // on utilise la méthode findOne de notre class User et on lui passe un objet qui va nous servir de filtre
     .then(user => { //on récupère la valeur qui a été trouvée par notre requête
         if (user === null) { //si elle est nulle, notre utilisateur n'existe pas dans notre BDD
-            return res.status(401).json({message: 'paire identifiant/mot de passe incorrecte'}); //on retourne une erreur 401 avec un message volontairement flou
+            return res.status(401).json({ message: 'paire identifiant/mot de passe incorrecte' }); //on retourne une erreur 401 avec un message volontairement flou
 
         } else { //sinon l'utilisateur est enregistré dans notre base de données
             bcrypt.compare(req.body.password, user.password) //on compare le MDP qui nous a été transmis par le client avec ce qui est stocké dans notre BDD
@@ -41,11 +55,13 @@ exports.login = (req, res, next) => {
                 }
             })
             .catch(error => {
+                console.log(error);
                 res.status(500).json( {error} );
             })
         }
     })
     .catch(error => { //erreur d'exécution de requête dans la BDD
+        console.log(error);
         res.status(500).json( {error} ); //on retourne une erreur 500 càd une erreur serveur
     }) 
 };
