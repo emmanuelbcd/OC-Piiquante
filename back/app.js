@@ -7,16 +7,12 @@ const path = require('path'); //importation pour accéder au path de notre serve
 const userRoutes = require('./routes/userRoutes');
 const sauceRoutes = require('./routes/sauceRoutes');
 
-//Models
-const Sauce = require('./models/Sauce.js'); // importation du modèle Sauce
-//const Sauce = require('./models/Sauce.js');
-
 // Base de données : connexion à MongoDB Atlas
 mongoose.connect('mongodb+srv://piiquante:ahuYPeNnOYDPrkbV@cluster0.yamztne.mongodb.net/?retryWrites=true&w=majority',
     { useNewUrlParser: true,
     useUnifiedTopology: true })
     .then(() => console.log('Connexion à MongoDB réussie !'))
-    .catch(() => console.log('Connexion à MongoDB échouée !'));
+    .catch((error) => console.log('Connexion à MongoDB échouée ', error));
 
 // création de l'application express
 const app = express();
