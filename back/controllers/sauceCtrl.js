@@ -6,7 +6,9 @@ exports.getAllSauces = (req, res, next) => {
     //on utilise la méthode find pour renvoyer un tableau contenant toutes les sauces dans notre BDD
     Sauce.find()
     .then((sauces) => { res.status(200).json(sauces); }) //réponse 200 lorsque le tableau est renvoyé
-    .catch((error) => { res.status(400).json({ error }); }); //erreur 400 si échec de la réponse
+    .catch((error) => { 
+        console.log(error);
+        res.status(400).json({ error }); }); //erreur 400 si échec de la réponse
   };
 
 
@@ -24,15 +26,24 @@ exports.createSauce = (req, res, next) => {
     //on utilise la méthode save pour enregistrer la nouvelle sauce dans la BDD
     sauce.save()
     .then(() => { res.status(201).json({ message: 'Sauce enregistrée !' }); }) //rép 201 lorsque la sauce est enregistrée   
-    .catch((error) => { res.status(400).json({ error }); }); //erreur 400 si échec
+    .catch((error) => { 
+        console.log(error);
+        res.status(400).json({ error }); 
+    }); //erreur 400 si échec
 };
 
 //logique métier de la route GET
 exports.getOneSauce = (req, res, next) => {
+    console.log('Recherche de la sauce avec l\'ID: ',req.params.id); //on affiche l'id de la sauce
     //on utilise la méthode findOne pour récupérer une sauce dans la BDD
     Sauce.findOne({ _id: req.params.id })
-    .then((sauce) => { res.status(200).json(sauce); }) //réponse 200 lorsqu'une sauce est renvoyée au front
-    .catch((error) => { res.status(404).json({ error }); }); // rép 404 lorsqu'il y a une erreur
+    .then((sauce) => { 
+        console.log('Sauce trouvée: ', sauce);
+        res.status(200).json(sauce); }) //réponse 200 lorsqu'une sauce est renvoyée au front
+    .catch((error) => { 
+        console.log(error);
+        res.status(404).json({ error }); 
+    }); // rép 404 lorsqu'il y a une erreur
 };
 
 //logique métier de la route PUT
@@ -51,10 +62,16 @@ exports.modifySauce = (req, res, next) => {
             } else { //on utilise la méthode updateOne pour mettre à jour ou modifier une sauce dans la BDD
                 Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
                     .then(() => { res.status(200).json({ message: 'Sauce modifiée !' }); }) // réponse 200 lorsqu'une sauce est bien modifiée dans la BDD
-                    .catch((error) => { res.status(401).json({ error }); }); //rép 401 lorsqu'il y a une erreur
+                    .catch((error) => { 
+                        console.log(error);
+                        res.status(401).json({ error }); 
+                    }); //rép 401 lorsqu'il y a une erreur
                 }
         })
-        .catch((error) => { res.status(400).json({ error }); }) //rép 400 s'il y a une erreur
+        .catch((error) => { 
+            console.log(error);
+            res.status(400).json({ error }); 
+        }) //rép 400 s'il y a une erreur
 };
 
 //logique métier de la route DELETE
@@ -68,13 +85,15 @@ exports.deleteSauce = (req, res, next) => {
                 fs.unlink(`images/${filename}`, () => {
                     Sauce.deleteOne({ _id: req.params.id })
                         .then(() => { res.status(200).json({ message: 'Objet supprimé !' }); })
-                        .catch(error => res.status(401).json({ error }));
+                        .catch(error => { 
+                            console.log(error);
+                            res.status(401).json({ error });
+                    })
                 });
             }
         })
-        .catch((error) => { res.status(500).json({ error }); })
-    //on utilise la méthode deleteOne pour supprimer une sauce dans la BDD
-    Sauce.deleteOne({_id: req.params.id})
-    .then(() => { res.status(200).json({ message: 'Sauce supprimée !'}); }) //réponse OK lorsqu'une sauce est supprimée
-    .catch((error) => { res.status(400).json({ error }); }); //réponse 400 si échec
+        .catch((error) => { 
+            console.log(error);
+            res.status(500).json({ error }); 
+    })
 };
