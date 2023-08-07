@@ -1,5 +1,5 @@
 const Sauce = require('../models/Sauce');
-const fs = require('fs'); //on importe fs (file système) qui permet de modifier le système de fichiers
+const fs = require('fs'); //on importe fs (file system) qui permet de modifier le système de fichiers
 
 //logique métier de la route GET
 exports.getAllSauces = (req, res, next) => {
@@ -97,3 +97,18 @@ exports.deleteSauce = (req, res, next) => {
             res.status(500).json({ error }); 
     })
 };
+
+//logique métier de la route POST like et dislike
+exports.likeSauce = (req, res, next) => {
+    //on récupère le like/dislike du corps de la requête
+    const like = req.body.like; //on récupère la valeur du champ like
+    const userId = req.body.userId; //on récupère la valeur du champ userId
+
+    //on trouve la sauce avec l'ID spécifié
+    Sauce.findOne({  _id: req.params.id })
+        .then()
+        .catch((error) => {
+            console.log(error);
+            res.status(500).json({ error });
+        })
+}
