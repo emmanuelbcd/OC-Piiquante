@@ -11,8 +11,8 @@ const sauceSchema = mongoose.Schema({
     heat: { type: Number, required: true },
     likes: { type: Number, default: 0 },
     dislikes: { type: Number, default: 0 },
-    usersLiked: { type: [String], default: [] },
-    usersDisliked: { type: [String], default: [] }
+    usersLiked: { type: [String], default: [] }, //par défaut, le champ du tableau est vide pour s'assurer qu'il ne sera pas undefined
+    usersDisliked: { type: [String], default: [] } //par défaut, le champ du tableau est vide pour s'assurer qu'il ne sera pas undefined
   });
   
   module.exports = mongoose.model('Sauce', sauceSchema);
