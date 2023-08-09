@@ -101,14 +101,63 @@ exports.deleteSauce = (req, res, next) => {
 //logique métier de la route POST like et dislike
 exports.likeSauce = (req, res, next) => {
     //on récupère le like/dislike du corps de la requête
-    const like = req.body.like; //on récupère la valeur du champ like
-    const userId = req.body.userId; //on récupère la valeur du champ userId
+    const like = req.body.like; //on récupère la valeur du champ like (1 pour like, -1 pour dislike et 0 pour annuler)
+    const userId = req.body.userId; //on récupère l'ID de l'utilisateur effectuant l'action
 
     //on trouve la sauce avec l'ID spécifié
-    Sauce.findOne({  _id: req.params.id })
-        .then()
-        .catch((error) => {
-            console.log(error);
-            res.status(500).json({ error });
-        })
+    Sauce.findOne({ _id: req.params.id }) //on trouve la sauce dans la BDD qui a l'ID correspondant à celui fourni dans l'URL
+    .then(sauce => { //si la sauce est trouvée
+        switch (like) { //l'instruction switch évalue une expression et selon le cas associé exécute les instructions correspondantes
+            case 1: // l'utilisateur aime la sauce
+            if (!sauce.usersLiked.includes(userId)) { //si l'ID de l'utilisateur ne figure pas dans le tableau des likes
+                //alors on met à jour la sauce pour ajouter cet utilisateur au tableau usersLiked avec $push
+                //et on incrémente le compteur des likes avec $inc
+                Sauce.updateOne({_id: req.params.id}, {$push: {usersLiked: userId}, $inc: {likes: 1}})
+                .then(() => {
+                    console.log('Like ajouté !');
+                    res.status(200).json({message: 'Like ajouté !'});
+                })
+                .catch(error => res.status(400).json({error}));
+            }
+            break; //l'instruction break permet de sortir de switch
+            case 0: // l'utilisateur annule son like ou son dislike
+            if (sauce.usersLiked.includes(userId)) { //si l'utilisateur avait précédemment liké la sauce
+                //alors on met à jour la sauce en retirant l'utilisateur du tableau usersLiked avec $pull
+                //et on diminue le compteur des likes de -1 avec $inc
+                Sauce.updateOne({ _id: req.params.id }, {$pull: {usersLiked: userId}, $inc: {likes: -1}})
+                    .then(() => {
+                        console.log('Like annulé !');
+                        res.status(200).json({message: 'Like annulé !'});
+                    })
+                    .catch(error => res.status(400).json({error}));
+            } else if (sauce.usersDisliked.includes(userId)) { //sinon si l'utilisateur avait précédemment disliké la sauce
+                // alors on met à jour la sauce en retirant l'utilisateur du tablea avec usersDisliked avec $pull
+                //et on diminue le compteur des likes de -1 avec $inc
+                Sauce.updateOne({ _id: req.params.id }, {$pull: {usersDisliked: userId}, $inc: {dislikes: -1}})
+                    .then(() => {
+                        console.log('Dislike annulé !');
+                        res.status(200).json({message: 'Dislike annulé !'});
+                    })
+                    .catch(error => res.status(400).json({error}));
+            }
+            break; //l'instruction break permet de sortir de switch
+            case -1: // l'utilisateur n'aime pas la sauce
+            if (!sauce.usersDisliked.includes(userId)) { //si l'ID de l'utilisateur ne figure pas déjà dans la liste des dislikes
+                //alors on met à jour la sauce pour ajouter à la liste usersDisliked avec $push
+                //et on augmente le compteur de dislikes de 1 avec $inc
+                Sauce.updateOne({ _id: req.params.id }, {$push: {usersDisliked: userId}, $inc: {dislikes: 1}})
+                .then(() => {
+                    console.log('Dislike ajouté !');
+                    res.status(200).json({message: 'Dislike ajouté !'});
+                })
+                .catch(error => res.status(400).json({error}));
+            }
+            break; //l'instruction break permet de sortir de switch
+            //on met un filet de sécurité avec l'instruction default
+            //si la valeur de like n'est ni 1, ni 0, ni -1, alors le code exécute l'instruction default
+            default:
+            res.status(400).json({ message: 'Erreur, mauvaise requête' });
+        }
+    })
+    .catch(error => res.status(500).json({ error }));
 }
