@@ -1,5 +1,6 @@
 //multer permet de gérer les fichiers entrants dans les requêtes HTTP
 const multer = require('multer'); //importation de multer
+const bytes = require('bytes'); //importation du package bytes permettant la limitation de la taille des fichiers
 
 const MIME_TYPES = { //préparation d'un dictionnaire pour l'extension du fichier
     'image/jpg': 'jpg',
@@ -19,5 +20,10 @@ const storage = multer.diskStorage({ //on utilise une fonction de multer disksto
     }
 });
 
-module.exports = multer({ storage }).single('image'); //on exporte notre middleware multer configuré
-//on appelle multer (on passe notre objet storage) et on appelle la méthode single (fichier unique)
+module.exports = multer({ //on appelle multer
+    storage: storage, //on passe notre objet storage
+    limits: {
+        fileSize: bytes('1MB')
+    }
+}).single('image'); //on exporte notre middleware multer configuré
+//et on appelle la méthode single (fichier unique)
