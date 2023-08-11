@@ -2,6 +2,7 @@
 const express = require('express'); // importation de express
 const mongoose = require('mongoose'); // importation de mongoose
 const path = require('path'); //importation pour accéder au path de notre serveur
+const helmet = require('helmet'); //on importe helmet qui sécurise l'app express en définissant divers en-têtes http
 
 // Routes
 const userRoutes = require('./routes/userRoutes');
@@ -34,6 +35,9 @@ app.use((req, res, next) => { // cors headers
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
 });
+
+//on utilise helmet après avoir défini CORS afin de ne pas interférer avec les en-têtes CORS
+app.use(helmet());
 
 // Endpoints
 app.use('/api/auth', userRoutes);
