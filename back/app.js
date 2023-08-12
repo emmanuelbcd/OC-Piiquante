@@ -1,6 +1,7 @@
 //Imports
 const express = require('express'); // importation de express
 const mongoose = require('mongoose'); // importation de mongoose
+require('dotenv').config();
 const path = require('path'); //importation pour accéder au path de notre serveur
 const helmet = require('helmet'); //on importe helmet qui sécurise l'app express en définissant divers en-têtes http
 
@@ -9,7 +10,7 @@ const userRoutes = require('./routes/userRoutes');
 const sauceRoutes = require('./routes/sauceRoutes');
 
 // Base de données : connexion à MongoDB Atlas
-mongoose.connect('mongodb+srv://piiquante:ahuYPeNnOYDPrkbV@cluster0.yamztne.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect(process.env.MONGO_URI,
     { useNewUrlParser: true,
     useUnifiedTopology: true })
     .then(() => console.log('Connexion à MongoDB réussie !'))
@@ -36,13 +37,13 @@ app.use((req, res, next) => { // cors headers
     next();
 });
 
-//on utilise helmet après avoir défini CORS afin de ne pas interférer avec les en-têtes CORS
-app.use(helmet());
-
 // Endpoints
 app.use('/api/auth', userRoutes);
 app.use('/api/sauces', sauceRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
+
+//on utilise helmet après avoir défini CORS afin de ne pas interférer avec les en-têtes CORS
+app.use(helmet());
 
 //exportation de cette appli
 module.exports = app;
