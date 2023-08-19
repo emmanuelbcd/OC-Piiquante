@@ -1,20 +1,38 @@
-# HotTakes
-This project was generated with Angular CLI version 13.2.4.
+# Projet 6 - Piiquante
 
-## Development server
-Run ng serve for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+Ce projet a été réalisé dans le cadre de ma formation de développeur web chez OpenClassrooms. Il s'agit d'une boutique en ligne. Dans sa première version, cette application est une "galerie de sauces" permettant aux utilisateurs de télécharger leurs sauces piquantes préférées et de liker ou disliker les sauces que d'autres partagent.
 
-## Code scaffolding
-Run ng generate component component-name to generate a new component. You can also use ng generate directive|pipe|service|class|guard|interface|enum|module.
+Ce projet est principalement développé à des fins éducatives. Il complète le projet précédent orienté front.
 
-## Build
-Run ng build to build the project. The build artifacts will be stored in the dist/ directory.
+## Technologies utilisées
+Frontend : Angular CLI version 13.2.4.
+Backend : Node.js, Express, MongoDB (avec mongoose).
 
-## Running unit tests
-Run ng test to execute the unit tests via Karma.
+## Mise en place du projet
 
-## Running end-to-end tests
-Run ng e2e to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Front-end
+La source du front-end a été fournie par OpenClassrooms et est disponible sur ce repository Github https://github.com/OpenClassrooms-Student-Center/Web-Developer-P6 
 
-## Further help
-To get more help on the Angular CLI use ng help or go check out the Angular CLI Overview and Command Reference page.
+Etapes d'installation :
+1. Cloner le repository dans un dossier nommé front
+2. Naviguer dans le dossier cd front
+3. Installer les dépendances avec "npm install"
+4. Lancer le serveur de développement avec "npm run start"
+5. L'interface est accessible sur ce port : http://localhost:4200/
+
+### Back-end
+Le back-end a été entièrement développé "from scratch".
+
+Etapes d'installation :
+1. Cloner ce repository dans un dossier nommé back
+2. Naviguer dans le dossier cd back
+3. Installer les dépendances avec "npm install"
+4. Lancer le serveur avec "nodemon server"
+5. L'interface est accessible sur ce port : http://localhost:3000/
+
+## Fonctionnalités principales
+
+1. Création de compte utilisateur : signup
+2. Authentification : login
+3. Ajout / modification / suppression de sauces
+4. Liker ou disliker les sauces que d'autres partagent
