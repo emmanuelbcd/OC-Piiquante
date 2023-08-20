@@ -1,8 +1,6 @@
-//gestion des données
-//une fois la logique du contrôleur exécutée, 
-//les données sont stockées dans la base de données mpongoDB.
-//Grâce à mongoose, on interagit avec la BDD, que ce soit pour créer (create), lire (read), màj (update) et 
-//supprimer (delete) des données.
+//Avant de stocker des données dans la base de données MongoDB,
+//on utilise Mongosse pour définfir des modèles.
+//Ce modèle permet de structurer les données (par exemple, une sauce) avec un certain format / schéma.
 
 const mongoose = require('mongoose');
 
