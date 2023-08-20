@@ -1,3 +1,8 @@
+//une fois la route identifiée, l'action se déplace vers le contrôleur.
+//ce sont des fonctions spécifiques à chaque route.
+//exemple : pour une route de création d'utilisateur, le contrôleur gère la logique de signup
+//exemple : pour une route de d'authentification, le contrôleur gère la logique de login
+
 const bcrypt = require('bcrypt');  // importation du package bcrypt
 const jwt = require('jsonwebtoken'); //importation de jsonwebtoken
 const User = require('../models/User');
@@ -48,7 +53,7 @@ exports.login = (req, res, next) => {
                         userId: user._id,
                         token: jwt.sign( //on appelle la fonction sign de jwt pour chiffrer un nouveau token
                             { userId: user._id}, //1er argument : le token contient l'ID de l'utilisateur en tant que payload
-                            'RANDOM_TOKEN_SECRET', //2nd argument : on utilise une chaîne secrète temporaire pour crypter notre token
+                            process.env.JWT_SECRET, //2nd argument : on utilise une chaîne secrète temporaire pour crypter notre token
                             { expiresIn: '24h'} //3ème argument : on définit une durée de validité du token
                         ) 
                     }); 
