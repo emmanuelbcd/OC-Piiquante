@@ -1,3 +1,12 @@
+//une fois la route identifiée, l'action se déplace vers le contrôleur.
+//ce sont des fonctions spécifiques à chaque route.
+//exemple : pour une route GET (afficher toutes les sauces), le contrôleur gère la logique de getAllSauces
+//exemple : pour une route POST (créer une sauce), le contrôleur gère la logique du createSauce
+//exemple : pour une route GET (afficher une sauce spécifique), le contrôleur gère la logique getOneSauce
+//exemple : pour une route PUT (modifier une sauce), le contrôleur gère la logique modifySauce
+//exemple: pour une route DELETE (supprimer une sauce), le contrôleur gère la logique deleteSauce
+//exemple : pour une route POST (like et dislike), le contrôleur gère la logique like et dislike
+
 const Sauce = require('../models/Sauce');
 const fs = require('fs'); //on importe fs (file system) qui permet de modifier le système de fichiers
 
