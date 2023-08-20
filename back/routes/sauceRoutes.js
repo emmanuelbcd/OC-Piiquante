@@ -1,3 +1,8 @@
+//une route est une méthode HTTP (GET, POST, PUT, DELETE, etc.) et
+//une route est un chemin (par exemple, '/:id')
+//routage : lorsqu'une requête atteint le serveur, elle est dirigée vers la route correspondante
+//basée sur la méthode et le chemin
+
 const express = require('express');
 const router = express.Router();
 
