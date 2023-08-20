@@ -1,3 +1,8 @@
+//Serveur HTTP : lorsqu'un utilisateur accède à l'application,
+// sa 1ère interaction est avec le serveur HTTP (créé grâce à nodejs)
+//Le serveur est configuré pour écouter et répondre aux requêtes entrantes.
+
+
 const http = require('http'); //importation du package http natif de node
 const app = require('./app'); //importation de l'application express
 
