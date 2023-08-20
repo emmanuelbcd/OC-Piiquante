@@ -1,8 +1,16 @@
+//Intro
+//Ce fichier est au coeur du backend. Structure de l'appli :
+//Grâce à Express, nous avons créé une instance de l'application qui centralise les routes.
+//Middlewares : avant d'atteindre les routes, plusieurs middlewares sont traversés.
+//exemple : on utilise un middleware pour gérer les headers et les CORS
+//exemple : on utilise un middleware pour convertir le body de la requête en JSON
+//exemple : on utilise un middleware pour sécuriser l'application avec helmet.
+
 //Imports
-const express = require('express'); // importation de express
-const mongoose = require('mongoose'); // importation de mongoose
-require('dotenv').config();
-const path = require('path'); //importation pour accéder au path de notre serveur
+const express = require('express'); // framework utilisé pour créer notre serveur
+const mongoose = require('mongoose'); // agit comme un intermédiaire entre node et la BDD mongoDB
+require('dotenv').config(); 
+const path = require('path'); //on utilise path ici pour garantir que le chemin vers le répertoire images est correctement formé 
 const helmet = require('helmet'); //on importe helmet qui sécurise l'app express en définissant divers en-têtes http
 
 // Routes
