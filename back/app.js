@@ -9,7 +9,7 @@
 //Imports
 const express = require('express'); // framework utilisé pour créer notre serveur
 const mongoose = require('mongoose'); // agit comme un intermédiaire entre node et la BDD mongoDB
-require('dotenv').config(); 
+require('dotenv').config(); //on configure les variables d'environnement en utilisant le fichier .dotenv
 const path = require('path'); //on utilise path ici pour garantir que le chemin vers le répertoire images est correctement formé 
 const helmet = require('helmet'); //on importe helmet qui sécurise l'app express en définissant divers en-têtes http
 
